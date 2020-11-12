@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Processo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="./controller.js"></script>
+    <script src="./server.js"></script>
+</head>
+
+<body class="container">
+    <div class="row">
+        <div class="col">
+            <form>
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input class="form-control" type="text" name="nome" id="nome">
+                    <small class="form-text text-muted">nome completo com rg e grad/post.</small>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                    <select name="tipo" class="form-control" id="tipo">
+                        <option value="aquisicao">Aquisição</option>
+                        <option value="transferencia">Transferência</option>
+                        <option value="porte">Porte</option>
+                        <option value="segunda-via">Segunda via</option>
+                    </select>
+                    <small class="form-text text-muted">Tipo do processo</small>
+                </div>
+                <div class="form-group">
+                    <label for="situacao">Situação</label>
+                    <select name="situacao" id="situacao" class="form-control">
+                        <option value="andamento">Em andamento</option>
+                        <option value="finalizado">Documento já entregue</option>
+                        <option value="desistencia">Interessado dessistiu do processo</option>
+                        <option value="indeferido">Processo foi indeferido</option>
+                    </select>
+                    <small class="form-text text-muted">Qual a atual situaççao do processo</small>
+                </div>
+                <div class="form-group">
+                    <label for="tombamento">Tombamento</label>
+                    <input class="form-control" type="text" name="tombamento" id="tombamento">
+                    <small class="form-text text-muted">tombamento do processo.</small>
+                </div>
+                <button class="btn btn-primary" type="button" onclick="atualizarProcesso()">Registrar</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+        <script>preencherFormEdicao()</script>
+</body>
+
+</html>
