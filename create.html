@@ -33,10 +33,10 @@
                 <div class="form-group">
                     <label for="situacao">Situação</label>
                     <select name="situacao" id="situacao" class="form-control">
-                        <option value="andamento">Em andamento</option>
-                        <option value="finalizado">Documento já entregue</option>
-                        <option value="desistencia">Interessado dessistiu do processo</option>
-                        <option value="indeferido">Processo foi indeferido</option>
+                        <option value="1">Em andamento</option>
+                        <option value="2">Documento já entregue</option>
+                        <option value="3">Interessado dessistiu do processo</option>
+                        <option value="4">Processo foi indeferido</option>
                     </select>
                     <small class="form-text text-muted">Qual a atual situaççao do processo</small>
                 </div>
@@ -45,8 +45,14 @@
                     <input class="form-control" type="text" name="tombamento" id="tombamento">
                     <small class="form-text text-muted">tombamento do processo.</small>
                 </div>
-                <button class="btn btn-primary" type="button" onclick="criarProcesso()">Registrar</button>
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" href="index.html">Voltar <i class="fas fa-arrow-left"></i></a>
+            <button class="btn btn-primary" type="button" onclick="criarProcesso()">Registrar <i
+                class="fas fa-user-plus"></i></button>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -58,6 +64,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
 </body>
 
 </html>

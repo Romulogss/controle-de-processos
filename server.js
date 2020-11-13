@@ -46,9 +46,10 @@ const createProcesso = novoProcesso => {
             }
         }
     `
-    Graphql.exec(query, novoProcesso)
-        .then(data => console.log(data))
-        .catch(erro => alert(erro))
+    console.log(novoProcesso)
+    // Graphql.exec(query, novoProcesso)
+    //     .then(data => console.log(data))
+    //     .catch(erro => alert(erro))
 }
 
 const updateProcesso = ProcessoAtualizado => {
@@ -58,12 +59,14 @@ const updateProcesso = ProcessoAtualizado => {
             $tipo: String!,
             $situacao: String!
             $tombamento: String!
+            $id: ID
         ) {
             updateProcesso (data: {
                 nome: $nome
                 tipo: $tipo
                 situacao: $situacao
                 tombamento: $tombamento
+                _id: $id
             }) {
                 _id
                 nome
@@ -72,6 +75,7 @@ const updateProcesso = ProcessoAtualizado => {
     `
     Graphql.exec(query, ProcessoAtualizado)
         .then(data => {
+            console.log(ProcessoAtualizado)
             console.log(data)
         })
         .catch(erro => alert(erro))
@@ -81,7 +85,8 @@ const find = id => {
     
     query = `
         query {
-         processo(id: "${id}") {
+         processo(id: "${id}" ) {
+            _id
             nome
             tipo
             situacao

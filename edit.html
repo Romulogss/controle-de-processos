@@ -33,19 +33,19 @@
                 <div class="form-group">
                     <label for="situacao">Situação</label>
                     <select name="situacao" id="situacao" class="form-control">
-                        <option value="andamento">Em andamento</option>
-                        <option value="finalizado">Documento já entregue</option>
-                        <option value="desistencia">Interessado dessistiu do processo</option>
-                        <option value="indeferido">Processo foi indeferido</option>
+                        <option value="1">Em andamento</option>
+                        <option value="2">Documento já entregue</option>
+                        <option value="3">Interessado dessistiu do processo</option>
+                        <option value="4">Processo foi indeferido</option>
                     </select>
-                    <small class="form-text text-muted">Qual a atual situaççao do processo</small>
+                    <small class="form-text text-muted">Qual a atual situação do processo</small>
                 </div>
                 <div class="form-group">
                     <label for="tombamento">Tombamento</label>
                     <input class="form-control" type="text" name="tombamento" id="tombamento">
                     <small class="form-text text-muted">tombamento do processo.</small>
                 </div>
-                <button class="btn btn-primary" type="button" onclick="atualizarProcesso()">Registrar</button>
+                <button class="btn btn-primary" type="button" onclick="atualizarProcesso()">Aualizar</button>
             </form>
         </div>
     </div>
@@ -58,7 +58,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-        <script>preencherFormEdicao()</script>
+    <script>preencherFormEdicao()</script>
 </body>
 
 </html>
