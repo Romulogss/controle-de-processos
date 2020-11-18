@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Processo</title>
+    <title>Editar Processo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="./controller.js"></script>
@@ -23,10 +23,10 @@
                 <div class="form-group">
                     <label for="tipo">Tipo</label>
                     <select name="tipo" class="form-control" id="tipo">
-                        <option value="aquisicao">Aquisição</option>
-                        <option value="transferencia">Transferência</option>
-                        <option value="porte">Porte</option>
-                        <option value="segunda-via">Segunda via</option>
+                        <option value="1">Aquisição</option>
+                        <option value="2">Transferência</option>
+                        <option value="3">Porte</option>
+                        <option value="4">Segunda via</option>
                     </select>
                     <small class="form-text text-muted">Tipo do processo</small>
                 </div>
@@ -34,9 +34,8 @@
                     <label for="situacao">Situação</label>
                     <select name="situacao" id="situacao" class="form-control">
                         <option value="1">Em andamento</option>
-                        <option value="2">Documento já entregue</option>
-                        <option value="3">Interessado dessistiu do processo</option>
-                        <option value="4">Processo foi indeferido</option>
+                        <option value="2">Finalizado</option>
+                        <option value="3">Indeferido/Desistência</option>
                     </select>
                     <small class="form-text text-muted">Qual a atual situação do processo</small>
                 </div>

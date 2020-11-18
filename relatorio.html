@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatorio</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <script src="controller.js"></script>
+    <script src="server.js"></script>
+    <script>popularProcessos()</script>
+    <style>
+        #voltar {
+            top: 10px;
+            position: fixed;
+            right: 5px;
+            font-size: 15px !important;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+    </style>
+</head>
+
+<body class="container" style="padding-top: 15px">
+    <!-- <p class="text-start fixed">Total de processos <span id="total"></span></p>
+    <button id="relatorio" class="btn btn-primary">Gerar relatório</button> -->
+    <a id="voltar" class="btn btn-primary" href="index.html">Voltar <i class="fas fa-arrow-left"></i></a>
+    <div class="row">
+        <div class="col">
+            <h4 class="text-center">TABELA POR TIPO E SITUAÇÃO</h4>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col" style="width: 20%;">Situação</th>
+                        <th scope="col">Aquisição</th>
+                        <th scope="col">Transferência</th>
+                        <th scope="col">Porte</th>
+                        <th scope="col">2ª via</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-de-relatorio">
+                    <tr>
+                        <th scope="row">Em Andamento</th>
+                        <td id="aquisicao-andamento"></td>
+                        <td id="transferencia-andamento"></td>
+                        <td id="porte-andamento"></td>
+                        <td id="segunda-via-andamento"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Finalizado</th>
+                        <td id="aquisicao-finalizado"></td>
+                        <td id="transferencia-finalizado"></td>
+                        <td id="porte-finalizado"></td>
+                        <td id="segunda-via-finalizado"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Desistiu/Indeferido</th>
+                        <td id="aquisicao-incompleto"></td>
+                        <td id="transferencia-incompleto"></td>
+                        <td id="porte-incompleto"></td>
+                        <td id="segunda-via-incompleto"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Total</th>
+                        <td id="aquisicao-total"></td>
+                        <td id="transferencia-total"></td>
+                        <td id="porte-total"></td>
+                        <td id="segunda-via-total"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4 class="text-center">GRÁFICO POR SITUAÇÃO</h4>
+            <canvas id="chart-total" width="400" height="100"></canvas>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
+    <script>grafico()</script>
+    <script>preencherRelatorio()</script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatorio</title>
+    <title>Processos</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="controller.js"></script>
@@ -24,7 +24,7 @@
 
 <body class="container" style="padding-top: 15px">
     <p class="text-start fixed">Total de processos <span id="total"></span></p>
-    <button id="relatorio" class="btn btn-primary">Gerar relatório</button>
+    <a id="relatorio" class="btn btn-primary" href="relatorio.html">Gerar relatório <i class="fas fa-chart-pie"></i></a>
     <div class="row">
         <div class="col text-center">
             <a class="btn btn-success" href="create.html">Adicionar novo processo <i class="fas fa-user-plus"></i></a>
@@ -38,15 +38,22 @@
                     <tr class="text-center">
                         <th scope="col" style="width: 15%;" class="align-self-center">Tombamento</th>
                         <th scope="col">Nome</th>
-                        <th scope="col">Tipo</th>
+                        <th scope="col">
+                            <select name="tipo" class="form-control" id="tipo" onchange="filtarProcessos()">
+                                <option value="0">Tipo</option>
+                                <option value="1">Aquisição</option>
+                                <option value="2">Transferência</option>
+                                <option value="3">Porte</option>
+                                <option value="4">Segunda via</option>
+                            </select>
+                        </th>
                         <th scope="col" class="text-center" style="width: 20%;">
                             <select name="situacao" id="situacao" class="form-control" style="width: 200px;"
                                 onchange="filtarProcessos()">
-                                <option value="">Situação</option>
+                                <option value="0">Situação</option>
                                 <option value="1">Em andamento</option>
-                                <option value="2">Documento já entregue</option>
-                                <option value="3">Interessado dessistiu do processo</option>
-                                <option value="4">Processo foi indeferido</option>
+                                <option value="2">Finalizado</option>
+                                <option value="3">Indeferido/Desistência</option>
                             </select>
                         </th>
                         <th scope="col" style="width: 10%">Editar</th>

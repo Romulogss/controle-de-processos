@@ -31,8 +31,8 @@ const createProcesso = novoProcesso => {
     const query = `
         mutation (
             $nome: String!,
-            $tipo: String!,
-            $situacao: String!
+            $tipo: Int!,
+            $situacao: Int!
             $tombamento: String!
         ) {
             createProcesso (data: {
@@ -46,18 +46,16 @@ const createProcesso = novoProcesso => {
             }
         }
     `
-    console.log(novoProcesso)
-    // Graphql.exec(query, novoProcesso)
-    //     .then(data => console.log(data))
-    //     .catch(erro => alert(erro))
+    //console.log(novoProcesso)
+    return Graphql.exec(query, novoProcesso)
 }
 
 const updateProcesso = ProcessoAtualizado => {
     const query = `
         mutation (
             $nome: String!,
-            $tipo: String!,
-            $situacao: String!
+            $tipo: Int!,
+            $situacao: Int!
             $tombamento: String!
             $id: ID
         ) {
