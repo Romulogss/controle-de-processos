@@ -10,30 +10,32 @@
     <script src="controller.js"></script>
     <script src="server.js"></script>
     <script>popularProcessos()</script>
-    <style>
-        #relatorio {
-            top: 10px;
-            position: fixed;
-            right: 5px;
-            font-size: 15px !important;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-    </style>
+    <style></style>
 </head>
 
 <body class="container" style="padding-top: 15px">
-    <p class="text-start fixed">Total de processos <span id="total"></span></p>
-    <a id="relatorio" class="btn btn-primary" href="relatorio.html">Gerar relatório <i class="fas fa-chart-pie"></i></a>
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+            <p class="text-start btn btn-danger">Total de processos: <span id="total"></span></p>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-success" href="create.html">Adicionar novo processo <i class="fas fa-user-plus"></i></a>
+        </li>
+        <li class="nav-item">
+            <a id="relatorio" class="btn btn-primary" href="relatorio.html">Gerar relatório <i class="fas fa-chart-pie"></i></a>
+        </li>
+      </ul>
+    
+    
     <div class="row">
         <div class="col text-center">
-            <a class="btn btn-success" href="create.html">Adicionar novo processo <i class="fas fa-user-plus"></i></a>
+            
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col">
-            <table class="table table-bordered text-center">
+            <table class="table text-center">
                 <thead>
                     <tr class="text-center">
                         <th scope="col" style="width: 15%;" class="align-self-center">Tombamento</th>

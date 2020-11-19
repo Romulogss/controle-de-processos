@@ -1,5 +1,5 @@
 const Graphql = {
-    endpoint: 'http://127.0.0.1:8000/',
+    endpoint: 'http://control-guns.herokuapp.com/',
     exec: (query, variaveis) => {
         return fetch(Graphql.endpoint, {
             method: 'POST',

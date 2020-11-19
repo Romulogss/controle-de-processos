@@ -10,8 +10,8 @@ const criarProcesso = () => {
         situacao,
         tombamento
     }
-    createProcesso(novoProcesso).then(res => {
-        alert(`Processo ${res} registrado!`)
+    createProcesso(novoProcesso).then(({ data: { createProcesso: tombamento } }) => {
+        alert(`Processo ${tombamento} registrado!`)
         window.location = 'index.html'
     })
 
@@ -32,14 +32,14 @@ const atualizarProcesso = () => {
     }
 
     updateProcesso(processoAtualizado).then(res => {
-        alert(`Processo Atualizado: ${situacao} -> ${res}`)
+        alert(`Processo Atualizado!`)
         window.location = 'index.html'
     }).catch(err => console.log(err))
 }
 
-const popularProcessos = () => getProcessos().then(({ data: processos }) => {
+const popularProcessos = () => getProcessos().then(({ data: { processos: processos } }) => {
     try {
-        listarProcessos(processos.processos)
+        listarProcessos(processos)
     } catch (err) {
         console.log(err)
     }
@@ -50,13 +50,13 @@ const filtarProcessos = () => {
     const tipo = parseInt(document.getElementById('tipo').value)
     if (situacao !== 0) {
         filtro = situacao
-        findBySituacao(situacao).then(({ data: processosPorSituacao }) => {
-            listarProcessos(processosPorSituacao.processosPorSituacao)
+        findBySituacao(situacao).then(({ data: { processosPorSituacao: processosPorSituacao } }) => {
+            listarProcessos(processosPorSituacao)
         })
     }
     else if (tipo !== 0) {
-        findByTipo(tipo).then(({ data: processosPorTipo }) => {
-            listarProcessos(processosPorTipo.processosPorTipo)
+        findByTipo(tipo).then(({ data: { processosPorTipo: processosPorTipo } }) => {
+            listarProcessos(processosPorTipo)
         })
     }
     else popularProcessos()
@@ -97,9 +97,8 @@ const preencherFormEdicao = () => {
 
 const totalDeProcessos = tipo => {
     let quantidadeDeProcessos = {}
-    totalByTipoESituacao(tipo).then(({ data: totalDeSituacaoPorTipo }) => {
-        quantidadeDeProcessos = totalDeSituacaoPorTipo.totalDeSituacaoPorTipo
-        console.log(quantidadeDeProcessos)
+    totalByTipoESituacao(tipo).then(({ data: { totalDeSituacaoPorTipo: totalDeSituacaoPorTipo } }) => {
+        quantidadeDeProcessos = totalDeSituacaoPorTipo
         return quantidadeDeProcessos
     })
     return quantidadeDeProcessos
@@ -113,8 +112,8 @@ const preencherRelatorio = () => {
     const tiposDeProcessos = ['aquisicao', 'transferencia', 'porte', 'segunda-via']
 
     tiposDeProcessos.forEach((tipo, idx) => {
-        totalByTipoESituacao(idx + 1).then(({ data: totalDeSituacaoPorTipo }) => {
-            const tipoAtual = totalDeSituacaoPorTipo.totalDeSituacaoPorTipo
+        totalByTipoESituacao(idx + 1).then(({ data: { totalDeSituacaoPorTipo: totalDeSituacaoPorTipo } }) => {
+            const tipoAtual = totalDeSituacaoPorTipo
             for (t in tipoAtual) {
                 preencherTabelaPorSituacaoETipo(t, tipo, tipoAtual[t])
             }
@@ -124,8 +123,8 @@ const preencherRelatorio = () => {
 }
 
 const instanciarGrafico = () => {
-    totalBySituacao().then(({ data: totalDeProcessosPorSituacao }) => {
-        montarGrafico(totalDeProcessosPorSituacao.totalDeProcessosPorSituacao)
+    totalBySituacao().then(({ data: { totalDeProcessosPorSituacao: totalDeProcessosPorSituacao } }) => {
+        montarGrafico(totalDeProcessosPorSituacao)
     })
 
 }
