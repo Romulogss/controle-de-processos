@@ -1,5 +1,5 @@
 const Graphql = {
-    endpoint: 'https://glacial-lowlands-37327.herokuapp.com/',
+    endpoint: 'http://127.0.0.1:8000/',
     exec: (query, variaveis) => {
         return fetch(Graphql.endpoint, {
             method: 'POST',
@@ -41,12 +41,10 @@ const createProcesso = novoProcesso => {
                 situacao: $situacao
                 tombamento: $tombamento
             }) {
-                _id
-                nome
+                tombamento
             }
         }
     `
-    //console.log(novoProcesso)
     return Graphql.exec(query, novoProcesso)
 }
 
@@ -66,22 +64,16 @@ const updateProcesso = ProcessoAtualizado => {
                 tombamento: $tombamento
                 _id: $id
             }) {
-                _id
-                nome
+                situacao
             }
         }
     `
-    Graphql.exec(query, ProcessoAtualizado)
-        .then(data => {
-            console.log(ProcessoAtualizado)
-            console.log(data)
-        })
-        .catch(erro => alert(erro))
+    return Graphql.exec(query, ProcessoAtualizado)
 }
 
-const find = id => {
-    
-    query = `
+//MÉTODOS DE BUSCA
+const findById = id => {
+    const query = `
         query {
          processo(id: "${id}" ) {
             _id
@@ -99,4 +91,92 @@ const find = id => {
             window.location = 'edit.html'
         })
         .catch(erro => alert(erro))
+}
+
+const findBySituacao = situacaoId => {
+    situacaoId = parseInt(situacaoId)
+    const query = `
+        query {
+            processosPorSituacao(data: ${situacaoId}) {
+                _id
+                nome
+                tipo
+                situacao
+                tombamento
+            }
+        }
+    `
+    return Graphql.exec(query)
+}
+
+const findByTipo = tipoId => {
+    tipoId = parseInt(tipoId)
+    const query = `
+        query {
+            processosPorTipo(data: ${tipoId}) {
+                _id
+                nome
+                tipo
+                situacao
+                tombamento
+            }
+        }
+    `
+    return Graphql.exec(query)
+}
+
+const findByTipoESituacao = tipoIdESituacaoId => {
+    const query = `
+        query {
+            processosPorTipoESituacao(data: ${tipoIdESituacaoId}) {
+                _id
+                nome
+                tipo
+                situacao
+                tombamento
+            }
+        }
+    `
+    return Graphql.exec(query)
+}
+
+const totalByTipo = tipoId => {
+    tipoId = parseInt(tipoId)
+    const query = `
+        query {
+            totalDeProcessosPorTipo(data: ${tipoId}) {
+                total
+            }
+        }
+    `
+    return Graphql.exec(query)
+}
+
+const totalBySituacao = () => {
+    const query = `
+        query {
+            totalDeProcessosPorSituacao {
+                andamento
+                finalizado
+                incompleto
+                total
+            }
+        }
+    `
+    return Graphql.exec(query)
+}
+
+const totalByTipoESituacao = tipoId => {
+    tipoId = parseInt(tipoId)
+    const query = `
+        query {
+            totalDeSituacaoPorTipo(data: ${tipoId}) {
+                andamento
+                finalizado
+                incompleto
+                total
+            }
+        }
+    `
+    return Graphql.exec(query)
 }

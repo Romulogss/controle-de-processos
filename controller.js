@@ -1,4 +1,3 @@
-let PROCESSOS = []
 const criarProcesso = () => {
     const nome = document.getElementById('nome').value
     const tipo = parseInt(document.getElementById('tipo').value)
@@ -11,13 +10,10 @@ const criarProcesso = () => {
         situacao,
         tombamento
     }
-    //console.log(novoProcesso)
-    createProcesso(novoProcesso).then(() => {
-        alert('Processo registrado')
+    createProcesso(novoProcesso).then(res => {
+        alert(`Processo ${res} registrado!`)
         window.location = 'index.html'
     })
-    //alert('Processo registrado')
-    setInterval(() => { }, 3000)
 
 }
 
@@ -35,55 +31,40 @@ const atualizarProcesso = () => {
         id: processo.processo._id,
     }
 
-    updateProcesso(processoAtualizado)
-    alert('Processo Atualizado!')
-    window.location = 'index.html'
+    updateProcesso(processoAtualizado).then(res => {
+        alert(`Processo Atualizado: ${situacao} -> ${res}`)
+        window.location = 'index.html'
+    }).catch(err => console.log(err))
 }
 
 const popularProcessos = () => getProcessos().then(({ data: processos }) => {
-    PROCESSOS = processos.processos
     try {
-        listarProcessos()
+        listarProcessos(processos.processos)
     } catch (err) {
         console.log(err)
     }
 })
 
-const processFilter = (tipoDeFiltro, filtro) => {
-    let processos = []
-    if (tipoDeFiltro === 'filtrar-por-situacao') {
-        PROCESSOS.forEach(processo => {
-            if (processo.situacao === filtro) processos.push(processo)
-        })
-    } else if (tipoDeFiltro === 'filtrar-por-tipo') {
-        PROCESSOS.forEach(processo => {
-            if (processo.tipo === filtro) processos.push(processo)
-        })
-    }
-    return processos
-}
-
 const filtarProcessos = () => {
     const situacao = parseInt(document.getElementById('situacao').value)
     const tipo = parseInt(document.getElementById('tipo').value)
-    let filtro = ''
     if (situacao !== 0) {
         filtro = situacao
-        listarProcessos(true, filtro, 'filtrar-por-situacao')
+        findBySituacao(situacao).then(({ data: processosPorSituacao }) => {
+            listarProcessos(processosPorSituacao.processosPorSituacao)
+        })
     }
     else if (tipo !== 0) {
-        filtro = tipo
-        listarProcessos(true, filtro, 'filtrar-por-tipo')
+        findByTipo(tipo).then(({ data: processosPorTipo }) => {
+            listarProcessos(processosPorTipo.processosPorTipo)
+        })
     }
-    else listarProcessos()
+    else popularProcessos()
 }
 
-const listarProcessos = (filtrar = null, filtro, tipoDeFiltro) => {
+const listarProcessos = (processos) => {
     let tabela = document.getElementById('lista-de-processos')
     tabela.innerHTML = ''
-    let status = ''
-    let tipo = ''
-    const processos = filtrar ? processFilter(tipoDeFiltro, filtro) : [...PROCESSOS]
     processos.forEach(processo => {
         if (processo.situacao === 1) status = 'Em andamento'
         if (processo.situacao === 2) status = 'Finalizado'
@@ -98,7 +79,7 @@ const listarProcessos = (filtrar = null, filtro, tipoDeFiltro) => {
             <td>${processo.nome}</td>
             <td>${tipo}</td>
             <td>${status}</td>
-            <td class="text-center"><button class="btn btn-primary" onclick="find('${processo._id}')"><i class="fas fa-edit"></i></button></td>
+            <td class="text-center"><button class="btn btn-primary" onclick="findById('${processo._id}')"><i class="fas fa-edit"></i></button></td>
         </tr>`
     })
     const total = processos.length
@@ -114,75 +95,45 @@ const preencherFormEdicao = () => {
     document.getElementById('tombamento').value = processo.tombamento
 }
 
-const totalPorTipoSituacao = (tipo, status) => {
-    let total = 0;
-    PROCESSOS.forEach(processo => {
-        if (processo.tipo === tipo && processo.situacao === status) total++;
-    })
-    //console.log(tipo)
-    return total
-}
-
-const totalPorSituacao = situacao => {
-    let total = 0;
-    PROCESSOS.forEach(processo => {
-        if (processo.situacao === situacao) total++;
-    })
-
-    return total
-}
-
 const totalDeProcessos = tipo => {
-    const andamento = totalPorTipoSituacao(tipo, 1)
-    const finalizado = totalPorTipoSituacao(tipo, 2)
-    const incompleto = totalPorTipoSituacao(tipo, 3)
-    const total = andamento + finalizado + incompleto
-
-    const quantidadeDeProcessos = {
-        andamento,
-        finalizado,
-        incompleto,
-        total
-    }
+    let quantidadeDeProcessos = {}
+    totalByTipoESituacao(tipo).then(({ data: totalDeSituacaoPorTipo }) => {
+        quantidadeDeProcessos = totalDeSituacaoPorTipo.totalDeSituacaoPorTipo
+        console.log(quantidadeDeProcessos)
+        return quantidadeDeProcessos
+    })
     return quantidadeDeProcessos
 }
 
 const preencherTabelaPorSituacaoETipo = (situacao, tipo, total) => {
-
     document.getElementById(`${tipo}-${situacao}`).innerHTML = total
 }
 
 const preencherRelatorio = () => {
-    getProcessos().then(({ data: processos }) => {
-        PROCESSOS = processos.processos
-        const tiposDeProcessos = ['aquisicao', 'transferencia', 'porte', 'segunda-via']
+    const tiposDeProcessos = ['aquisicao', 'transferencia', 'porte', 'segunda-via']
 
-        tiposDeProcessos.forEach((tipo, idx) => {
-            const tipoAtual = totalDeProcessos(idx + 1)
+    tiposDeProcessos.forEach((tipo, idx) => {
+        totalByTipoESituacao(idx + 1).then(({ data: totalDeSituacaoPorTipo }) => {
+            const tipoAtual = totalDeSituacaoPorTipo.totalDeSituacaoPorTipo
             for (t in tipoAtual) {
                 preencherTabelaPorSituacaoETipo(t, tipo, tipoAtual[t])
             }
         })
-        grafico()
     })
+    instanciarGrafico()
 }
 
-const grafico = () => {
-    const andamento = totalPorSituacao(1)
-    const finalizado = totalPorSituacao(2)
-    const incompleto = totalPorSituacao(3)
-    const dados = {
-        andamento,
-        finalizado,
-        incompleto
-    }
-    criarGrafico(dados)
+const instanciarGrafico = () => {
+    totalBySituacao().then(({ data: totalDeProcessosPorSituacao }) => {
+        montarGrafico(totalDeProcessosPorSituacao.totalDeProcessosPorSituacao)
+    })
+
 }
 
-const criarGrafico = (dados) => {
+const montarGrafico = (dados) => {
     var ctx = document.getElementById(`chart-total`).getContext('2d');
     var myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'pie',
         data: {
             labels: ['Andamendo', 'Finalizado', 'Desistência/Indeferido'],
             datasets: [{
