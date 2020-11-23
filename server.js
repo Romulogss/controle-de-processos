@@ -1,5 +1,5 @@
 const Graphql = {
-    endpoint: 'http://control-guns.herokuapp.com/',
+    endpoint: 'https://control-guns.herokuapp.com/',
     exec: (query, variaveis) => {
         return fetch(Graphql.endpoint, {
             method: 'POST',
@@ -13,10 +13,12 @@ const Graphql = {
     }
 }
 
-const getProcessos = () => {
+const getProcessos = pagina => {
+    pagina = parseInt(pagina) * 25
+    pagina = pagina != 0 ? (pagina + 1) : 0
     const query = `
         query {
-            processos {
+            processos(data: ${pagina}) {
                 _id
                 nome
                 tipo
@@ -72,6 +74,21 @@ const updateProcesso = ProcessoAtualizado => {
 }
 
 //MÉTODOS DE BUSCA
+const findByTombamento = tombamento => {
+    const query = `
+        query {
+            processosPorTombamento(data: "${tombamento}") {
+                _id
+                nome
+                tipo
+                situacao
+                tombamento
+            }
+        }
+    `
+    return Graphql.exec(query)
+}
+
 const findById = id => {
     const query = `
         query {

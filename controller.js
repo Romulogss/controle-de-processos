@@ -37,13 +37,26 @@ const atualizarProcesso = () => {
     }).catch(err => console.log(err))
 }
 
-const popularProcessos = () => getProcessos().then(({ data: { processos: processos } }) => {
-    try {
-        listarProcessos(processos)
-    } catch (err) {
-        console.log(err)
+const popularProcessos = (pagina = 0) => {
+    localStorage.setItem('pageAtual', pagina)
+    paginacao()
+    getProcessos(pagina).then(({ data: { processos: processos } }) => {
+        try {
+            listarProcessos(processos)
+        } catch (err) {
+            console.log(err)
+        }
+    })
+}
+
+const buscarPorTombamento = tombamento => {
+    tombamento = tombamento.trim()
+    if (tombamento !== "") {
+        findByTombamento(tombamento).then(({ data: { processosPorTombamento } }) => {
+            listarProcessos(processosPorTombamento)
+        })
     }
-})
+}
 
 const filtarProcessos = () => {
     const situacao = parseInt(document.getElementById('situacao').value)
@@ -60,6 +73,50 @@ const filtarProcessos = () => {
         })
     }
     else popularProcessos()
+}
+
+const paginacao = () => {
+    totalBySituacao().then(({ data: { totalDeProcessosPorSituacao: { total } } }) => {
+        const pages = Math.ceil(total / 25)
+        const pageAtual = parseInt(localStorage.pageAtual)
+        console.log(localStorage.pageAtual)
+        let navPaginacao = `
+        <nav aria-label="Page navigation example" style="text-align: center;">
+                <ul class="pagination" style="text-align: center;">
+                    <li class="page-item" >
+                        <a class="page-link" aria-label="Previous" onclick="popularProcessos(0)" href="#topo">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+        `
+        let i = 0
+        let ultimaPage = 9
+        if(pageAtual > 5) {
+            i = pageAtual - 5
+            ultimaPage = (pageAtual + 5) > pages ? pages : (pageAtual + 5)
+            console.log(i + ultimaPage)
+            if((i + ultimaPage) <= 10) {
+                i=0
+                ultimaPage = 10
+            }
+        }
+
+        for (i; i < ultimaPage; i++) {
+            navPaginacao += `<li class="page-item"><a class="page-link" onclick="popularProcessos(${i})" href="#topo">${i + 1}</a></li>`
+        }
+        navPaginacao += `
+        <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        `
+        document.getElementById('paginas').innerHTML = navPaginacao
+    })
 }
 
 const listarProcessos = (processos) => {
@@ -84,6 +141,7 @@ const listarProcessos = (processos) => {
     })
     const total = processos.length
     document.getElementById('total').innerHTML = total
+    paginacao()
 }
 
 const preencherFormEdicao = () => {
