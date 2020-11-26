@@ -9,7 +9,6 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="controller.js"></script>
     <script src="server.js"></script>
-    <script>popularProcessos()</script>
     <style></style>
 </head>
 
@@ -33,7 +32,7 @@
     <br>
     <div class="row justify-content-center">
         <div class="col align-items-center">
-            <table class="table text-center">
+            <table class="table table-bordered text-center">
                 <thead>
                     <tr class="text-center">
                         <th scope="col" style="width: 15%;" class="align-self-center">
@@ -42,7 +41,8 @@
                         </th>
                         <th scope="col">Nome</th>
                         <th scope="col">
-                            <select name="tipo" class="form-control" id="tipo" onchange="filtarProcessos()">
+                            <select name="tipo" class="form-control" id="tipo"
+                                onchange="document.getElementById('situacao').value = 0;popularProcessos()">
                                 <option value="0">Tipo</option>
                                 <option value="1">Aquisição</option>
                                 <option value="2">Transferência</option>
@@ -52,7 +52,7 @@
                         </th>
                         <th scope="col" class="text-center" style="width: 20%;">
                             <select name="situacao" id="situacao" class="form-control" style="width: 200px;"
-                                onchange="filtarProcessos()">
+                                onchange="document.getElementById('tipo').value = 0;popularProcessos()">
                                 <option value="0">Situação</option>
                                 <option value="1">Em andamento</option>
                                 <option value="2">Finalizado</option>
@@ -83,6 +83,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
+    <script>popularProcessos()</script>
 </body>
 
 </html>

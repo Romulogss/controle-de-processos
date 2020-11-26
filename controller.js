@@ -10,7 +10,7 @@ const criarProcesso = () => {
         situacao,
         tombamento
     }
-    createProcesso(novoProcesso).then(({ data: { createProcesso: tombamento } }) => {
+    createProcesso(novoProcesso).then(({ data: { createProcesso: { tombamento } } }) => {
         alert(`Processo ${tombamento} registrado!`)
         window.location = 'index.html'
     })
@@ -37,23 +37,43 @@ const atualizarProcesso = () => {
     }).catch(err => console.log(err))
 }
 
-const popularProcessos = (pagina = 0) => {
-    localStorage.setItem('pageAtual', pagina)
-    paginacao()
-    getProcessos(pagina).then(({ data: { processos: processos } }) => {
-        try {
-            listarProcessos(processos)
-        } catch (err) {
-            console.log(err)
+const popularProcessos = (pagina = 1) => {
+    // paginacao()
+    const situacao = parseInt(document.getElementById('situacao').value)
+    const tipo = parseInt(document.getElementById('tipo').value)
+    if (situacao !== 0) {
+        const busca = {
+            situacao,
+            page: pagina
         }
-    })
+        findBySituacao(busca).then(({ data: { processosPorSituacao: { processos, paginacao } } }) => {
+            listarProcessos(processos)
+            montarPaginacao(paginacao)
+        })
+    }
+    else if (tipo !== 0) {
+        const busca = {
+            tipo,
+            page: pagina
+        }
+        findByTipo(busca).then(({ data: { processosPorTipo: { processos, paginacao } } }) => {
+            listarProcessos(processos)
+            montarPaginacao(paginacao)
+        })
+    } else {
+        getProcessos(pagina).then(({ data: { processos: { processos, paginacao } } }) => {
+            listarProcessos(processos)
+            montarPaginacao(paginacao)
+        })
+    }
 }
 
 const buscarPorTombamento = tombamento => {
     tombamento = tombamento.trim()
-    if (tombamento !== "") {
+    if (tombamento.length >= 2) {
         findByTombamento(tombamento).then(({ data: { processosPorTombamento } }) => {
             listarProcessos(processosPorTombamento)
+            document.getElementById('paginas').hidden = 1
         })
     }
 }
@@ -62,8 +82,11 @@ const filtarProcessos = () => {
     const situacao = parseInt(document.getElementById('situacao').value)
     const tipo = parseInt(document.getElementById('tipo').value)
     if (situacao !== 0) {
-        filtro = situacao
-        findBySituacao(situacao).then(({ data: { processosPorSituacao: processosPorSituacao } }) => {
+        const busca = {
+            situacao,
+            skip: parseInt(localStorage.pageAtual)
+        }
+        findBySituacao(busca).then(({ data: { processosPorSituacao: processosPorSituacao } }) => {
             listarProcessos(processosPorSituacao)
         })
     }
@@ -75,48 +98,35 @@ const filtarProcessos = () => {
     else popularProcessos()
 }
 
-const paginacao = () => {
-    totalBySituacao().then(({ data: { totalDeProcessosPorSituacao: { total } } }) => {
-        const pages = Math.ceil(total / 25)
-        const pageAtual = parseInt(localStorage.pageAtual)
-        console.log(localStorage.pageAtual)
-        let navPaginacao = `
-        <nav aria-label="Page navigation example" style="text-align: center;">
-                <ul class="pagination" style="text-align: center;">
-                    <li class="page-item" >
-                        <a class="page-link" aria-label="Previous" onclick="popularProcessos(0)" href="#topo">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
+const montarPaginacao = dadosPaginacao => {
+    document.getElementById('paginas').hidden = 0
+    const inicioPaginacao = dadosPaginacao.paginaAtual - 5 < 1 ? 1 : dadosPaginacao.paginaAtual - 5
+    const finalPaginacao = (dadosPaginacao.paginaAtual + 5) > dadosPaginacao.totalDePaginas ? dadosPaginacao.totalDePaginas : dadosPaginacao.paginaAtual + 5
+    let navPaginacao = `
+    <nav aria-label="Page navigation example" style="text-align: center;">
+            <ul class="pagination" style="text-align: center;">
+                <li class="page-item" >
+                    <a class="page-link" aria-label="Previous" onclick="popularProcessos(1)" href="#topo">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
         `
-        let i = 0
-        let ultimaPage = 9
-        if(pageAtual > 5) {
-            i = pageAtual - 5
-            ultimaPage = (pageAtual + 5) > pages ? pages : (pageAtual + 5)
-            console.log(i + ultimaPage)
-            if((i + ultimaPage) <= 10) {
-                i=0
-                ultimaPage = 10
-            }
-        }
-
-        for (i; i < ultimaPage; i++) {
-            navPaginacao += `<li class="page-item"><a class="page-link" onclick="popularProcessos(${i})" href="#topo">${i + 1}</a></li>`
-        }
-        navPaginacao += `
-        <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+    for (let i = inicioPaginacao; i <= finalPaginacao; i++) {
+        navPaginacao += `<li class="page-item"><a class="page-link" onclick="popularProcessos(${i})" href="#topo">${i}</a></li>`
+    }
+    navPaginacao += `
+    <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next" onclick="popularProcessos(${dadosPaginacao.totalDePaginas})" href="#topo">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
         `
-        document.getElementById('paginas').innerHTML = navPaginacao
-    })
+    document.getElementById('paginas').innerHTML = navPaginacao
+    document.getElementById('total').innerHTML = dadosPaginacao.totalDeProcessos
 }
 
 const listarProcessos = (processos) => {
@@ -125,7 +135,7 @@ const listarProcessos = (processos) => {
     processos.forEach(processo => {
         if (processo.situacao === 1) status = 'Em andamento'
         if (processo.situacao === 2) status = 'Finalizado'
-        if (processo.situacao === 3) status = 'Desistiu/Indeferido'
+        if (processo.situacao === 3) status = 'Desistiu/Indeferido/Erro'
         if (processo.tipo === 1) tipo = 'Aquisição'
         if (processo.tipo === 2) tipo = 'Transferência'
         if (processo.tipo === 3) tipo = 'Porte'
@@ -139,9 +149,6 @@ const listarProcessos = (processos) => {
             <td class="text-center"><button class="btn btn-primary" onclick="findById('${processo._id}')"><i class="fas fa-edit"></i></button></td>
         </tr>`
     })
-    const total = processos.length
-    document.getElementById('total').innerHTML = total
-    paginacao()
 }
 
 const preencherFormEdicao = () => {
@@ -155,7 +162,7 @@ const preencherFormEdicao = () => {
 
 const totalDeProcessos = tipo => {
     let quantidadeDeProcessos = {}
-    totalByTipoESituacao(tipo).then(({ data: { totalDeSituacaoPorTipo: totalDeSituacaoPorTipo } }) => {
+    totalByTipoESituacao(tipo).then(({ data: { totalDeSituacaoPorTipo } }) => {
         quantidadeDeProcessos = totalDeSituacaoPorTipo
         return quantidadeDeProcessos
     })
@@ -170,7 +177,7 @@ const preencherRelatorio = () => {
     const tiposDeProcessos = ['aquisicao', 'transferencia', 'porte', 'segunda-via']
 
     tiposDeProcessos.forEach((tipo, idx) => {
-        totalByTipoESituacao(idx + 1).then(({ data: { totalDeSituacaoPorTipo: totalDeSituacaoPorTipo } }) => {
+        totalByTipoESituacao(idx + 1).then(({ data: { totalDeSituacaoPorTipo } }) => {
             const tipoAtual = totalDeSituacaoPorTipo
             for (t in tipoAtual) {
                 preencherTabelaPorSituacaoETipo(t, tipo, tipoAtual[t])

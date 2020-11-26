@@ -1,5 +1,5 @@
 const Graphql = {
-    endpoint: 'https://control-guns.herokuapp.com/',
+    endpoint: 'http://localhost:8000/',
     exec: (query, variaveis) => {
         return fetch(Graphql.endpoint, {
             method: 'POST',
@@ -14,16 +14,22 @@ const Graphql = {
 }
 
 const getProcessos = pagina => {
-    pagina = parseInt(pagina) * 25
-    pagina = pagina != 0 ? (pagina + 1) : 0
+    pagina = pagina
     const query = `
         query {
             processos(data: ${pagina}) {
-                _id
-                nome
-                tipo
-                situacao
-                tombamento
+                processos {
+                    _id
+                    nome
+                    tipo
+                    situacao
+                    tombamento
+                }
+                paginacao {
+                    totalDeProcessos
+                    paginaAtual
+                    totalDePaginas
+                }
             }
         }
     `
@@ -86,6 +92,7 @@ const findByTombamento = tombamento => {
             }
         }
     `
+    console.log(query)
     return Graphql.exec(query)
 }
 
@@ -110,32 +117,44 @@ const findById = id => {
         .catch(erro => alert(erro))
 }
 
-const findBySituacao = situacaoId => {
-    situacaoId = parseInt(situacaoId)
+const findBySituacao = dadosDaBusca => {
     const query = `
         query {
-            processosPorSituacao(data: ${situacaoId}) {
-                _id
-                nome
-                tipo
-                situacao
-                tombamento
+            processosPorSituacao(data: {situacao: ${dadosDaBusca.situacao}, page: ${dadosDaBusca.page}}) {
+                processos {
+                    _id
+                    nome
+                    tipo
+                    situacao
+                    tombamento
+                }
+                paginacao {
+                    totalDeProcessos
+                    paginaAtual
+                    totalDePaginas
+                }
             }
         }
     `
     return Graphql.exec(query)
 }
 
-const findByTipo = tipoId => {
-    tipoId = parseInt(tipoId)
+const findByTipo = dadosDaBusca => {
     const query = `
         query {
-            processosPorTipo(data: ${tipoId}) {
-                _id
-                nome
-                tipo
-                situacao
-                tombamento
+            processosPorTipo(data: {tipo: ${dadosDaBusca.tipo}, page: ${dadosDaBusca.page}}) {
+                processos {
+                    _id
+                    nome
+                    tipo
+                    situacao
+                    tombamento
+                }
+                paginacao {
+                    totalDeProcessos
+                    paginaAtual
+                    totalDePaginas
+                }
             }
         }
     `
