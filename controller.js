@@ -184,6 +184,14 @@ const preencherRelatorio = () => {
             }
         })
     })
+
+    totalBySituacao().then(({ data: { totalDeProcessosPorSituacao: { andamento, finalizado, incompleto, total } } }) => {
+        document.getElementById('total-andamento').innerHTML = `${andamento} | ${((andamento*100)/total).toFixed(2)}%`
+        document.getElementById('total-incompleto').innerHTML = `${incompleto} | ${((incompleto*100)/total).toFixed(2)}%`
+        document.getElementById('total-finalizado').innerHTML = `${finalizado} | ${((finalizado*100)/total).toFixed(2)}%`
+        document.getElementById('total-total').innerHTML = total
+        console.log()
+    })
     instanciarGrafico()
 }
 
@@ -216,6 +224,6 @@ const montarGrafico = (dados) => {
                 borderWidth: 1
             }]
         },
-        options: {}
+        options: { }
     });
 }

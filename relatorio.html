@@ -20,13 +20,19 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+
     </style>
 </head>
 
 <body class="container" style="padding-top: 15px">
     <!-- <p class="text-start fixed">Total de processos <span id="total"></span></p>
     <button id="relatorio" class="btn btn-primary">Gerar relatório</button> -->
-    <a id="voltar" class="btn btn-primary" href="index.html">Voltar <i class="fas fa-arrow-left"></i></a>
+    <a id="voltar" class="btn btn-primary no-print" href="index.html">Voltar <i class="fas fa-arrow-left"></i></a>
     <div class="row">
         <div class="col">
             <h4 class="text-center">TABELA POR TIPO E SITUAÇÃO</h4>
@@ -38,6 +44,7 @@
                         <th scope="col">Transferência</th>
                         <th scope="col">Porte</th>
                         <th scope="col">2ª via</th>
+                        <th scope="col">Total Por Situação</th>
                     </tr>
                 </thead>
                 <tbody id="lista-de-relatorio">
@@ -47,6 +54,7 @@
                         <td id="transferencia-andamento"></td>
                         <td id="porte-andamento"></td>
                         <td id="segunda-via-andamento"></td>
+                        <td id="total-andamento"></td>
                     </tr>
                     <tr>
                         <th scope="row">Finalizado</th>
@@ -54,6 +62,7 @@
                         <td id="transferencia-finalizado"></td>
                         <td id="porte-finalizado"></td>
                         <td id="segunda-via-finalizado"></td>
+                        <td id="total-finalizado"></td>
                     </tr>
                     <tr>
                         <th scope="row">Desistiu/Indeferido</th>
@@ -61,13 +70,15 @@
                         <td id="transferencia-incompleto"></td>
                         <td id="porte-incompleto"></td>
                         <td id="segunda-via-incompleto"></td>
+                        <td id="total-incompleto"></td>
                     </tr>
                     <tr>
-                        <th scope="row">Total</th>
+                        <th scope="row">Total por tipo</th>
                         <td id="aquisicao-total"></td>
                         <td id="transferencia-total"></td>
                         <td id="porte-total"></td>
                         <td id="segunda-via-total"></td>
+                        <td id="total-total"></td>
                     </tr>
                 </tbody>
             </table>
