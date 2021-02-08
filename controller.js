@@ -1,8 +1,4 @@
 const criarProcesso = () => {
-    const nome  = 'Rômulo Sá'
-    const tipo = 1
-    const situacao = 2
-    const tombamento  = '2025/2021'
 
     const novoProcesso = {
         nome,
@@ -13,7 +9,7 @@ const criarProcesso = () => {
     createProcesso(novoProcesso).then(({ data: { createProcesso: { tombamento } } }) => {
         alert(`Processo ${tombamento} registrado!`)
         window.location = 'index.html'
-    })
+    }).catch(err => console.log(err));
 
 }
 
