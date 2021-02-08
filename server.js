@@ -108,7 +108,7 @@ const findById = id => {
          }   
         }
     `
-    console.log(query)
+    // console.log(query)
     return Graphql.exec(query)
         .then(({ data: processo }) => {
             localStorage.setItem('processo', JSON.stringify(processo))
