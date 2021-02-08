@@ -1,8 +1,8 @@
 const criarProcesso = () => {
-    const nome  = 'Rômulo Sá'
-    const tipo = 1
-    const situacao = 2
-    const tombamento  = '20125/2020'
+    const nome  = 'Diego O escapador'
+    const tipo = 404
+    const situacao = 'complicada'
+    const tombamento  = 'Carreta virou, possi fazer nada!'
 
     const novoProcesso = {
         nome,
