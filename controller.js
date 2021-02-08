@@ -1,8 +1,8 @@
 const criarProcesso = () => {
-    const nome = document.getElementById('nome').value
-    const tipo = parseInt(document.getElementById('tipo').value)
-    const situacao = parseInt(document.getElementById('situacao').value)
-    const tombamento = document.getElementById('tombamento').value
+    const nome  =' Diego Caiena'
+    const tipo = 3
+    const situacao = 'crítico'
+    const tombamento  = 'Carreta furação virou!!!'
 
     const novoProcesso = {
         nome,
